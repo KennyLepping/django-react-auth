@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-@z(dsn6pbp=ijqy2sb#-qpx^mm5q8@&#9v=g_%vqqh#^9p5^8q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -42,12 +42,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
+    'rest_auth.registration',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.openid',
-    'rest_auth.registration',
     'corsheaders',
 
     # Local Apps
