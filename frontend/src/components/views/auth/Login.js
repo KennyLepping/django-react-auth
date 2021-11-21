@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+// import axios from "../../../apis/djangoReactAuthAPI";
+import Cookies from 'js-cookie'
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,25 +17,39 @@ const Login = () => {
     }
   }, []);
 
+  const csrftoken = Cookies.get('csrftoken') 
+
+  // Request payload won't show password with https:
+  https://stackoverflow.com/questions/67434663/how-to-hide-credentials-when-call-an-api-login-via-axios-in-vue-js-3
   const onSubmit = (e) => {
     e.preventDefault();
 
-    const user = {
-      email: email,
-      password: password,
-    };
+    // const user = {
+    //   email: email,
+    //   password: password,
+    // };
 
-    fetch("http://127.0.0.1:8000/api/v1/users/auth/login/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    })
-      .then((res) => res.json())
+    axios
+      .post(
+        "http://127.0.0.1:8000/api/v1/users/auth/login/",
+        // "/v1/users/auth/login/",
+        {
+          email: email,
+          password: password,
+        },
+        {
+          "Access-Control-Allow-Credentials": true,
+          headers: {
+            "Content-Type": "application/json",
+            'X-CSRFToken': csrftoken
+          },
+        }
+      )
+      .then((response) => response.data)
       .then((data) => {
         console.log(data);
         if (data.key) {
+          console.log(data);
           localStorage.clear();
           localStorage.setItem("token", data.key);
           window.location.replace("http://localhost:3000/dashboard");
@@ -43,6 +60,29 @@ const Login = () => {
           setErrors(true);
         }
       });
+
+    // fetch("http://127.0.0.1:8000/api/v1/users/auth/login/", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(user),
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     console.log(data);
+    //     if (data.key) {
+    //         console.log(data);
+    //       localStorage.clear();
+    //       localStorage.setItem("token", data.key);
+    //     //   window.location.replace("http://localhost:3000/dashboard");
+    //     } else {
+    //       setEmail("");
+    //       setPassword("");
+    //       localStorage.clear();
+    //       setErrors(true);
+    //     }
+    //   });
   };
 
   return (

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
+import axios from "axios";
 
 const Logout = () => {
   const [loading, setLoading] = useState(true);
@@ -14,17 +15,32 @@ const Logout = () => {
   const handleLogout = (e) => {
     e.preventDefault();
 
-    fetch("http://127.0.0.1:8000/api/v1/users/auth/logout/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${localStorage.getItem("token")}`,
-      },
-    }).then((data) => {
-      console.log(data);
-      localStorage.clear();
-      window.location.replace("http://localhost:3000/login");
-    });
+    axios
+      .post("http://127.0.0.1:8000/api/v1/users/auth/logout/", {
+        "Access-Control-Allow-Credentials": true,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => response.data)
+      .then((data) => {
+        console.log(data);
+        localStorage.clear();
+        window.location.replace("http://localhost:3000/login");
+      });
+
+    //     fetch("http://127.0.0.1:8000/api/v1/users/auth/logout/", {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Token ${localStorage.getItem("token")}`,
+    //       },
+    //     }).then((data) => {
+    //       console.log(data);
+    //       localStorage.clear();
+    //       window.location.replace("http://localhost:3000/login");
+    //     });
   };
 
   return (
