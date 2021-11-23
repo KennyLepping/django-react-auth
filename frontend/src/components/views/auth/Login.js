@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 // import axios from "../../../apis/djangoReactAuthAPI";
-import Cookies from 'js-cookie'
+// import axiosInstance from "../../../apis/djangoReactAuthAPI";
+// import Cookies from 'js-cookie'
 import axios from "axios";
 
 const Login = () => {
@@ -17,22 +18,13 @@ const Login = () => {
     }
   }, []);
 
-  const csrftoken = Cookies.get('csrftoken') 
-
-  // Request payload won't show password with https:
-  https://stackoverflow.com/questions/67434663/how-to-hide-credentials-when-call-an-api-login-via-axios-in-vue-js-3
+// Request payload won't show password with https:
+// https://stackoverflow.com/questions/67434663/how-to-hide-credentials-when-call-an-api-login-via-axios-in-vue-js-3
   const onSubmit = (e) => {
     e.preventDefault();
 
-    // const user = {
-    //   email: email,
-    //   password: password,
-    // };
-
-    axios
-      .post(
-        "http://127.0.0.1:8000/api/v1/users/auth/login/",
-        // "/v1/users/auth/login/",
+    axios.post
+        ("http://127.0.0.1:8000/api/v1/users/auth/login/",
         {
           email: email,
           password: password,
@@ -41,7 +33,6 @@ const Login = () => {
           "Access-Control-Allow-Credentials": true,
           headers: {
             "Content-Type": "application/json",
-            'X-CSRFToken': csrftoken
           },
         }
       )
@@ -61,6 +52,7 @@ const Login = () => {
         }
       });
 
+        
     // fetch("http://127.0.0.1:8000/api/v1/users/auth/login/", {
     //   method: "POST",
     //   headers: {
